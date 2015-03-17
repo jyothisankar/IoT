@@ -1,0 +1,106 @@
+<!doctype html>
+
+<html>
+	<head>
+		<title>
+			Weather Information
+		</title>	
+		<style type = text/css>
+			body {
+				background-color: #EEE8AA;
+			}
+		</style>	
+		<script type="text/javascript"> 
+			function test()
+			{		 
+				var xmlhttp;
+				
+				if (window.XMLHttpRequest) //XMLHttpRequest object is used to exchange data with a server behind the scenes ,
+				{						  //to update parts of a web page, without reloading the whole page.
+				// code for chrome and fire fox
+					  xmlhttp=new XMLHttpRequest();
+				}
+				else
+				{// code for IE6, IE5
+					  xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+				}
+				xmlhttp.onreadystatechange=function()
+				{
+				 	 if (xmlhttp.readyState == 4 && xmlhttp.status == 200)
+					 {
+						 var xmlop = xmlhttp.responseXML;
+						 
+						 // declaring variables for each parameter
+						 var Temp = xmlop.getElementsByTagName("temperature")[0].attributes;
+						 var Humd = xmlop.getElementsByTagName("humidity")[0].attributes;
+						 var Prsr = xmlop.getElementsByTagName("pressure")[0].attributes;
+						 var Wind = xmlop.getElementsByTagName("speed")[0].attributes;
+						 var Dir = xmlop.getElementsByTagName("direction")[0].attributes;
+						 var Date = xmlop.getElementsByTagName("lastupdate")[0].attributes;
+						 
+						 // printing all temperature details
+						 console.log("Temperature :");
+						 console.log(Temp.getNamedItem("value"));
+						 console.log(Temp.getNamedItem("min"));
+						 console.log(Temp.getNamedItem("max"));
+						 
+						 //printing Humidity details
+						 console.log("Humidity :");
+						 console.log(Humd.getNamedItem("value"));
+						 
+						 //printing pressure details
+						 console.log("Pressure :");
+						 console.log(Prsr.getNamedItem("value"));
+						 
+						 //printing wind and its direction detatils
+						 console.log("Wind speed :");
+						 console.log(Wind.getNamedItem("value"));						 
+						 console.log("wind value and direction :");						 
+						 console.log(Dir.getNamedItem("value"));
+						 console.log(Dir.getNamedItem("name"));
+						 
+						 //printing last updated date
+						 console.log("Last Updated Date :");
+						 console.log(Date.getNamedItem("value"));
+						 //window.location.href="WeatherDetails.html?temp="+Temp.getNamedItem("value").nodeValue+"&max="+; 	 	
+
+					 	// printing data values in text boxes
+						 document.mahesh.T_min.value = Temp.getNamedItem("min").nodeValue ;
+						 document.mahesh.T_max.value = Temp.getNamedItem("max").nodeValue ;
+						 document.mahesh.Pres.value = Prsr.getNamedItem("value").nodeValue ;
+						 document.mahesh.Humd.value = Humd.getNamedItem("value").nodeValue ;
+						 document.mahesh.W_speed.value = Wind.getNamedItem("value").nodeValue ;
+						 document.mahesh.W_Dir.value = Dir.getNamedItem("name").nodeValue ;
+						 document.mahesh.U_date.value = Date.getNamedItem("value").nodeValue ;
+					 }
+				};
+				console.log(document.getElementById("CityName").value);
+				/*With AJAX, the JavaScript does not have to wait for the server response, but can instead:
+				1.execute other scripts while waiting for server response.
+				2.deal with the response when the response ready
+				*/
+				xmlhttp.open("GET","http://api.openweathermap.org/data/2.5/weather?APPID=8fb03d15d2aa2006a3b355b3923d2c7a&q="+document.getElementById("CityName").value+"&mode=xml",true);
+				xmlhttp.send();
+			}			
+		</script>
+	</head>	
+	
+	<body>
+		<center>
+			<h2> Weather Information </h2><br><br>
+			
+			<h4>Enter City Name:</h4> <input type = "textbox" id = "CityName"/> <br /><br />
+			<form name = "mahesh" >
+				<input type = "button" id = "Submit" value = "Submit" onClick = "test()" /> <br /> <br />
+				Temperature Minimum Value : <input type = "text" id = "T_min" name = "T_min" value = ""/> <br /> <br />
+				Temperature Maximum Value : <input type = "text" id = "T_max" name = "T_max" value = ""/> <br /> <br />
+				Pressure Value &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: <input type = "text" id = "Pres" name = "Pres" value = ""/> <br /> <br />
+				Humidity Value &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: <input type = "text" id = "Humd" name = "Humd" value = ""/> <br /> <br />
+				Wind Speed &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: <input type = "text" id = "W_speed" name = "W_speed" value =""/><br /><br />
+				Wind Direction &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: <input type = "text" id = "W_dir" name = "W_Dir"> <br /> <br />
+				Last Updated date &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;; <input type = "text" id = "U_date" name = "U_date"/> <br /> <br />
+			</form>	
+		</center>	
+		<div id="temp"></div>
+	</body>	
+</html>	
